@@ -15,14 +15,15 @@
 #define button2 PORTBbits.RB1
 
 // hiermee stel ik alleen deze twee bits in als input
-TRISBbits.RB0 = 1;
-TRISBbits.RB1 = 1;
+TRISBbits.TRISRB0 = 1;
+TRISBbits.TRISRB1 = 1;
 
 // hiermee stel ik alleen deze 3 bits als output
 TRISCbits.RC7 = 0;
 TRISCbits.RC5 = 0;
 TRISCbits.RC4 = 0;
 
+TRISB = 0x03;
 
 // verschillende variabelen voor het programma
 int button1 = 0;
@@ -34,7 +35,7 @@ int ledArray[3] = {0x80,0x30,0x10};
 ANCON1
 
 
-void main(void)
+void main()
 {
     while(1)	{
 		
