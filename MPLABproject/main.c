@@ -11,8 +11,8 @@
 #include <xc.h>
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
-#define button1 PORTBbits.RB0
-#define button2 PORTBbits.RB1
+#define buttonPress1 PORTBbits.RB0
+#define buttonPress2 PORTBbits.RB1
 
 // verschillende variabelen voor het programma
 int button1 = 0;
@@ -41,11 +41,11 @@ void main()
 	
     while(1)	{
 		
-		if (PORTRB0 == 0)	{
+		if (buttonPress1 == 0)	{
 			button1 = 1;
 		}
 		
-		if	(PORTRB1 == 0)	{
+		if	(buttonPress2 == 0)	{
 			button2 = 1;
 		}
 		
@@ -73,7 +73,7 @@ void main()
 			}
 		}
 		
-		delay(90)
+		delay(90);
 		
 	}
 }
