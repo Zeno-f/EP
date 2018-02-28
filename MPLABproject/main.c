@@ -21,12 +21,8 @@ int loop = 0;
 int loopLicht = 0;
 int ledArray[3] = {0x80,0x30,0x10};
 
-ANCON1
-
-
 void main()
 {
-	
 	// Ini fase
 	
 	// hiermee stel ik alleen deze twee bits in als input
@@ -37,6 +33,9 @@ void main()
 	TRISCbits.TRISC7 = 0;
 	TRISCbits.TRISC5 = 0;
 	TRISCbits.TRISC4 = 0;
+	
+	// hiermee maak je digitale poorten van RB0 en RB1 voor de buttons
+	ANCON1 = 0x00;
 	
 	// main fase
 	
