@@ -7,24 +7,12 @@
  *
  */
 
+#include <stdio.h>
 #include <xc.h>
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 #define button1 PORTBbits.RB0
 #define button2 PORTBbits.RB1
-
-// verschillende variabelen voor het programma
-int button1 = 0;
-int button2 = 0;
-int loop = 0;
-int loopLicht = 0;
-int ledArray[3];
-
-	ledArray[0] = 0x80;
-	ledArray[1] = 0x30;
-	ledArray[2] = 0x10;
-
-ANCON1
 
 // hiermee stel ik alleen deze twee bits in als input
 TRISBbits.RB0 = 1;
@@ -34,6 +22,17 @@ TRISBbits.RB1 = 1;
 TRISCbits.RC7 = 0;
 TRISCbits.RC5 = 0;
 TRISCbits.RC4 = 0;
+
+
+// verschillende variabelen voor het programma
+int button1 = 0;
+int button2 = 0;
+int loop = 0;
+int loopLicht = 0;
+int ledArray[3] = {0x80,0x30,0x10};
+
+ANCON1
+
 
 void main(void)
 {
