@@ -63,17 +63,17 @@ void main()
 			
 			if	(loop > 2)	{
 				loop = 0;
-				LATC(ledArray[loop]);
+				LATC = ledArray[loop];
 				loop++;
 			}
 			
 			else	{
-				LATC(ledArray[loop]);
+				LATC = ledArray[loop];
 				loop++;
 			}
 		}
 		
-		delay(90);
+		__delay_ms(90);
 		
 	}
 }
