@@ -14,17 +14,6 @@
 #define button1 PORTBbits.RB0
 #define button2 PORTBbits.RB1
 
-// hiermee stel ik alleen deze twee bits in als input
-TRISBbits.TRISRB0 = 1;
-TRISBbits.TRISRB1 = 1;
-
-// hiermee stel ik alleen deze 3 bits als output
-TRISCbits.RC7 = 0;
-TRISCbits.RC5 = 0;
-TRISCbits.RC4 = 0;
-
-TRISB = 0x03;
-
 // verschillende variabelen voor het programma
 int button1 = 0;
 int button2 = 0;
@@ -37,6 +26,20 @@ ANCON1
 
 void main()
 {
+	
+	// Ini fase
+	
+	// hiermee stel ik alleen deze twee bits in als input
+	TRISBbits.TRISB0 = 1;
+	TRISBbits.TRISB1 = 1;
+
+	// hiermee stel ik alleen deze 3 bits als output
+	TRISCbits.TRISC7 = 0;
+	TRISCbits.TRISC5 = 0;
+	TRISCbits.TRISC4 = 0;
+	
+	// main fase
+	
     while(1)	{
 		
 		if (PORTRB0 == 0)	{
