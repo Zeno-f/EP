@@ -19,10 +19,9 @@ int button1 = 0;
 int button2 = 0;
 int loop = 0;
 int loopLicht = 0;
-int ledArray[3] = {0x80,0x30,0x10};
+char ledArray[4] = {0x80,0x30,0x10,0x00};
 
-void main()
-{
+void main() {
 	// Ini fase
 	
 	// hiermee stel ik alleen deze twee bits in als input
@@ -39,67 +38,15 @@ void main()
 	
 	// main fase
 	while (1)	{
-		
-		while (button1 == 1 || buttonPress1 == 0)	{
-		
-			button1 = 1;
-		
-			if (loop == 2)	{
-				LATCbits.LATC4 = 1;
-				LATCbits.LATC7 = 0;
-				loop = 1;
-			}
-			
-			if (loop == 1)	{
-				LATCbits.LATC4 = 0;
-				LATCbits.LATC5 = 1;
-				loop = 2;
-			}
-			
-			if (loop == 0)	{
-				LATCbits.LATC5 = 0;
-				LATCbits.LATC7 = 1;
-				loop = 0;
-			}
-			
-			if	(buttonPress2 == 0)	{
-				button1 == 0;
-			}
-		
-			__delay_ms(90);
-		}
-	
-		while (button2 == 1 || buttonPress2 == 0)	{
-		
-			button2 = 1;
 
-			if (loop == 2)	{
-				LATCbits.LATC4 = 1;
-				LATCbits.LATC7 = 0;
-				loop = 1;
-			}
-			
-			if (loop == 1)	{
-				LATCbits.LATC4 = 0;
-				LATCbits.LATC5 = 1;
-				loop = 2;
-			}
-			
-			if (loop == 0)	{
-				LATCbits.LATC5 = 0;
-				LATCbits.LATC7 = 1;
-				loop = 0;
-			}
+	LATC = ledArray[loop];
+	loop++;
+	
+	if (loop == 2)	{
+		loop = 0;
+	}
+	
+        __delay_ms(90);
 		
-			if	(buttonPress2 == 0)	{
-				button1 == 0;
-			}
-		
-			__delay_ms(90);
-		}
-		
-		LATCbits.LATC4 = 0;
-		LATCbits.LATC5 = 0;
-		LATCbits.LATC7 = 0;
 	}
 }
