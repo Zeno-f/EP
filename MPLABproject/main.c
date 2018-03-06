@@ -49,11 +49,11 @@ void main()
 			button2 = 1;
 		}
 		
-		if	(button1 ^ button2)	{
-			LATC = 0xB0
+		if	(button1 != button2)	{
+			LATC = 0xB0;
 		}
 		
-		if (button1 & button2)	{
+		if (button1 == button2)	{
 			LATC = 0x00;
 			button1 = 0;
 			button2 = 0;
