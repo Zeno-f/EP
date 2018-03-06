@@ -50,30 +50,15 @@ void main()
 		}
 		
 		if	(button1 ^ button2)	{
-			loopLicht = 1;
+			LATC = 0xB0
 		}
 		
 		if (button1 & button2)	{
-			loopLicht = 0;
+			LATC = 0x00;
 			button1 = 0;
 			button2 = 0;
 		}
-		
-		if (loopLicht == 1)	{
-			
-			if	(loop > 2)	{
-				loop = 0;
-				LATC = ledArray[loop];
-				loop++;
-			}
-			
-			else	{
-				LATC = ledArray[loop];
-				loop++;
-			}
-		}
-		
+
 		__delay_ms(90);
-		
 	}
 }
