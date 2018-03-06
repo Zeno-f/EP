@@ -1,0 +1,6 @@
+LAT vs PORT
+
+The old R/W/M problem is caused by glitching and playing tug-of-war with the pin from the outside world. A port write can be fooled by the fact that the memory bit is actually tied to the hostile outside environment. The latch register was put as a buffered memory location to protect against this and drive the port pin, even when it is getting hammered from the outside world.
+ 
+As Dario always reminds people "talk to the latch, not the port".
+
