@@ -38,30 +38,13 @@ void main()
 	ANCON1 = 0x00;
 	
 	// main fase
-	
-    while(1)	{
+	while (1)	{
 		
-		if (buttonPress1 == 0)	{
+		while (button1 == 1 || buttonPress1 == 0)	{
+		
 			button1 = 1;
-		}
 		
-		if	(buttonPress2 == 0)	{
-			button2 = 1;
-		}
-		
-		if	(button1 ^ button2)	{
-			loopLicht = 1;
-		}
-		
-		if (button1 & button2)	{
-			loopLicht = 0;
-			button1 = 0;
-			button2 = 0;
-		}
-		
-		if (loopLicht == 1)	{
-			
-			if (loop == 0)	{
+			if (loop == 2)	{
 				LATCbits.LATC4 = 1;
 				LATCbits.LATC7 = 0;
 				loop = 1;
@@ -73,20 +56,50 @@ void main()
 				loop = 2;
 			}
 			
-			if (loop == 2)	{
+			if (loop == 0)	{
 				LATCbits.LATC5 = 0;
 				LATCbits.LATC7 = 1;
 				loop = 0;
 			}
+			
+			if	(buttonPress2 == 0)	{
+				button1 == 0;
+			}
+		
+			__delay_ms(90);
+		}
+	
+		while (button2 == 1 || buttonPress2 == 0)	{
+		
+			button2 = 1;
+
+			if (loop == 2)	{
+				LATCbits.LATC4 = 1;
+				LATCbits.LATC7 = 0;
+				loop = 1;
+			}
+			
+			if (loop == 1)	{
+				LATCbits.LATC4 = 0;
+				LATCbits.LATC5 = 1;
+				loop = 2;
+			}
+			
+			if (loop == 0)	{
+				LATCbits.LATC5 = 0;
+				LATCbits.LATC7 = 1;
+				loop = 0;
+			}
+		
+			if	(buttonPress2 == 0)	{
+				button1 == 0;
+			}
+		
+			__delay_ms(90);
 		}
 		
-		if (loopLicht == 0)	{
-			LATCbits.LATC4 = 0;
-			LATCbits.LATC5 = 0;
-			LATCbits.LATC7 = 0;
-		}
-		
-		__delay_ms(90);
-		
+		LATCbits.LATC4 = 0;
+		LATCbits.LATC5 = 0;
+		LATCbits.LATC7 = 0;
 	}
 }
