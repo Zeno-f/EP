@@ -61,16 +61,29 @@ void main()
 		
 		if (loopLicht == 1)	{
 			
-			if	(loop > 2)	{
-				loop = 0;
-				LATC = ledArray[loop];
-				loop++;
+			if (loop == 0)	{
+				LATCbits.LATC4 = 1;
+				LATCbits.LATC7 = 0;
+				loop = 1;
 			}
 			
-			else	{
-				LATC = ledArray[loop];
-				loop++;
+			if (loop == 1)	{
+				LATCbits.LATC4 = 0;
+				LATCbits.LATC5 = 1;
+				loop = 2;
 			}
+			
+			if (loop == 2)	{
+				LATCbits.LATC5 = 0;
+				LATCbits.LATC7 = 1;
+				loop = 0;
+			}
+		}
+		
+		if (loopLicht == 0)	{
+			LATCbits.LATC4 = 0;
+			LATCbits.LATC5 = 0;
+			LATCbits.LATC7 = 0;
 		}
 		
 		__delay_ms(90);
