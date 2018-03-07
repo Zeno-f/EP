@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <xc.h>
+#include "fuses.h"
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 #define buttonPress1 PORTBbits.RB0
@@ -17,9 +18,18 @@
 // verschillende variabelen voor het programma
 int button1 = 0;
 int button2 = 0;
-int loop = 0;
-int loopLicht = 0;
-char ledArray[4] = {0x80,0x30,0x10,0x00};
+int loop;
+char ledArray[4] = {0x80,0x20,0x10,0x00};
+
+void loopLicht(void)	{
+	
+		for (loop = 0;loop < 3;loop++)	{
+		
+		LATC = ledArray[loop];
+		__delay_ms(90);
+		
+	}
+}
 
 void main() {
 	// Ini fase
@@ -37,16 +47,10 @@ void main() {
 	ANCON1 = 0x00;
 	
 	// main fase
+	
 	while (1)	{
-
-	LATC = ledArray[loop];
-	loop++;
-	
-	if (loop == 2)	{
-		loop = 0;
-	}
-	
-        __delay_ms(90);
+		
+		loopLicht();
 		
 	}
 }
