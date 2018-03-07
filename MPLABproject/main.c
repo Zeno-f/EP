@@ -18,16 +18,15 @@
 // verschillende variabelen voor het programma
 int button1 = 0;
 int button2 = 0;
-int loop;
+int loop = 0;
 char ledArray[4] = {0x80,0x20,0x10,0x00};
 
 void loopLicht(void)	{
 	
-		for (loop = 0;loop < 3;loop++)	{
-		
-		LATC = ledArray[loop];
-		__delay_ms(90);
-		
+	LATC = ledArray[loop];
+	loop++;
+	if (loop == 3)	{
+		loop = 0;
 	}
 }
 
@@ -51,6 +50,6 @@ void main() {
 	while (1)	{
 		
 		loopLicht();
-		
+		__delay_ms(200);
 	}
 }
