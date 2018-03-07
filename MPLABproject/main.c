@@ -19,7 +19,7 @@
 int button1 = 0;
 int button2 = 0;
 int loop = 0;
-char ledArray[4] = {0x80,0x20,0x10,0x00};
+unsigned char ledArray[4] = {0x80,0x20,0x10,0x00};
 
 void loopLicht(void)	{
 	
@@ -49,7 +49,24 @@ void main() {
 	
 	while (1)	{
 		
-		loopLicht();
-		__delay_ms(200);
+        if (buttonPress1 == 0)   {
+            button1 = 1;
+        }
+        
+        if (buttonPress2 == 0)  {
+            button2 = 1;
+        }
+
+        if (button1 == button2)  {
+            LATC = ledArray[3];
+            button2 = 0;
+            button1 = 0;
+        }
+        
+        else {
+            loopLicht();
+        }
+        
+        __delay_ms(200);
 	}
 }
