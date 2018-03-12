@@ -15,10 +15,10 @@
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 
-// shady code to be able to use printf with the microchip
+// specific putch() function for this project, needed for printf()
 void putch (char c)	{
 	while (TXSTA1bits.TRMT == 0)	{
-		'transmit register' = c;
+		TXREG1 = c;
 	}
 }
 
@@ -31,25 +31,25 @@ void main() {
 	PIE3bits.TX2IE = 0;		// disable Tx interrupt USART2
 	PIE1bits.RC1IE = 0;		// disable Rx interrupt USART1
 	PIE1bits.TX1IE = 0;		// disable Tx interrupt USART1
-	TXSTA1 = ????;			//
-	RCSTA1 = ????;			//
-	BAUDCON1 = ????;		//
-	SPBRG1 = ????;			//
+	TXSTA1 = 0xA0;			//
+	RCSTA1 = 0x80;			//
+	BAUDCON1 = 0xC0;		//
+	SPBRG1 = 12;			//  
 	
 	// port settings
 	
-	TRISC = ????;			// portC output
-	LATC = ????;			// LED1 groen aan
+	TRISCbits.TRISC5 = 0;			// portC output
+	LATCbits.LATC5 = 1;				// LED1 groen aan
 	
 	// variables 
 	
-	int ????;
+	int i;
 	
 	// main fase
 	
 	while (1)	{
-		for ('range aangeven')	{
-			printf("test = %d\n\r", ????);
+		for (i = 0;i < 100;i++)	{
+			printf("test = %d\n\r", i);
 		}
 	}	
 }
