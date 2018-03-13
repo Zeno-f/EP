@@ -18,8 +18,10 @@
 // specific putch() function for this project, needed for printf()
 void putch (char c)	{
 	while (TXSTA1bits.TRMT == 0)	{
-		TXREG1 = c;
+		;
 	}
+	TXREG1 = c;
+	
 }
 
 void main() {
