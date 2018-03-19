@@ -30,16 +30,16 @@ void interrupt myIsr (void)	{
 		TMR0L = 0xE5;									// 229
 	}
 	
-	if (INTCONbits.INT0IE && INTCONbits.INT0IF)	{		// enables external interrupt - did the interrupt happen
+	if (INTCONbits.INT0E && INTCONbits.INT0F)	{		// enables external interrupt - did the interrupt happen
 		yellow = 0;
 		INTCONbits.TMR0IE = 0;							// disables TMR0 interrupt
-		INTCONbits.INT0IF = 0;							// clears this interrupt
+		INTCONbits.INT0F = 0;							// clears this interrupt
 	}
 	
-	if (INTCON3bits.INT1IE && INTCON3bits.INT1IF)	{	// enables external interrupt - did the interrupt happen
+	if (INTCON3bits.INT1E && INTCON3bits.INT1F)	{	// enables external interrupt - did the interrupt happen
 		yellow = 1;
 		INTCONbits.TMR0IE = 1;							// enables TMR0 interrupt
-		INTCON3bits.INT1IF = 0;							// clears this interrupt
+		INTCON3bits.INT1F = 0;							// clears this interrupt
 	}
 }
 
@@ -54,13 +54,15 @@ void main() {
 	ANCON1bits.ANSEL10 = 0;
 	ANCON1bits.ANSEL8 = 0;
 	T0CON = 0b10000110;				// enables timer 1 as 16 bit with a /128 prescale
-	INTCON2bits.TMR0IP = 1;
-	INTCONbits.TMR0IF = 0;
-	INTCONbits.TMR0IE = 1;
-	INTCON2bits.INTEDG0 = 0;
-	INTCON3bits.INT1E = 1;
-	INTCON2bits.INTEDG1 = 1;
+	INTCON2bits.TMR0IP = 1;			// overflow interrupt priority
+	INTCONbits.TMR0IF = 0;			// clears the timer overflow
+	INTCONbits.TMR0IE = 1;			// enables the timer interrupt	
+	INTCON2bits.INTEDG0 = 0;		// interrupt on rising/falling
+	INTCONbits.INT0E = 1;			// enables external interrupt on button 1
+	INTCON3bits.INT1E = 1;			// enables external interrupt on button 2
+	INTCON2bits.INTEDG1 = 1;		// interrupt on rising/falling
 	
+    // enables all interrupts
 	ei();
 	
 	while(1);
