@@ -21,23 +21,25 @@
 
 void interrupt myIsr (void)	{
 	
-	if (INTCONbits.TMR0IE && INTCONbits.TMR0IF)	{
-		INTCONbits.TMR0IF = 0;
+	// software interrupt
+	if (INTCONbits.TMR0IE && INTCONbits.TMR0IF)	{		// enables TMR0 overflow interrupt - TMR0 reached overflow?
+		INTCONbits.TMR0IF = 0;							// reset TMR0, clears the overflow
 		LATCbits.LATC4 = ~LATCbits.LATC4;
-		TMR0H = 0x48;
-		TMR0L = 0xE4;
+		// offset, 18661
+		TMR0H = 0x48;									// 72
+		TMR0L = 0xE5;									// 229
 	}
 	
-	if (INTCONbits.INT0E && INTCONbits.INT0F)	{
+	if (INTCONbits.INT0IE && INTCONbits.INT0IF)	{		// enables external interrupt - did the interrupt happen
 		yellow = 0;
-		INTCONbits.TMR0IE = 0;
-		INTCONbits.INT0F = 0;
+		INTCONbits.TMR0IE = 0;							// disables TMR0 interrupt
+		INTCONbits.INT0IF = 0;							// clears this interrupt
 	}
 	
-	if (INTCON3bits.INT1E && INTCON3bits.INT1F)	{
+	if (INTCON3bits.INT1IE && INTCON3bits.INT1IF)	{	// enables external interrupt - did the interrupt happen
 		yellow = 1;
-		INTCONbits.TMR0IE = 1;
-		INTCON3bits.INT1F = 0;
+		INTCONbits.TMR0IE = 1;							// enables TMR0 interrupt
+		INTCON3bits.INT1IF = 0;							// clears this interrupt
 	}
 }
 
@@ -51,7 +53,7 @@ void main() {
 	TRISBbits.TRISB1 = 1;
 	ANCON1bits.ANSEL10 = 0;
 	ANCON1bits.ANSEL8 = 0;
-	T0CON = 0b10000100;
+	T0CON = 0b10000110;				// enables timer 1 as 16 bit with a /128 prescale
 	INTCON2bits.TMR0IP = 1;
 	INTCONbits.TMR0IF = 0;
 	INTCONbits.TMR0IE = 1;
