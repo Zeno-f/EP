@@ -1,0 +1,41 @@
+12 bit ADC in de microchip
+	4096 mogelijke waarden
+	
+	ADC is naukeurig genoeg voor dit project	
+
+	instellingen
+sample time instellen, hoe regelmatig zet je een analoog signaal om naar digitaal
+	-hoeveel samples per seconden
+rekening mee houden dat het ook tijd kost voor de ADC om een nieuwe waarde aan te nemen
+	-Tad
+	
+	er is een control bit die aangeeft of het converteren klaar is of niet
+
+maximale input spanning:
+	Vref
+		is in te stellen
+	aantal bits
+	
+	deze twee bepalen de resolutie
+	
+	AN1 en AN9 zijn als pins naar buiten gebracht
+	
+	de 12 bit waarde word opgeslagen in  8 bit in de onderstaande registers
+	ADRESH : ADRESL (concatenate)
+	
+	om deze samen te voegen in 1 waarde doe je door de bits van ADRESH 8 bit op te schuiven
+	value = ADRESH <<8 | ADRESL
+	
+	
+	______________________________ Vin
+	|			|
+	|			|
+	|		    R
+	|         	|
+	|			|________
+	9V			|		|
+	|			|		|
+	|			R	potmeter--> AN1
+	|			|		|
+	|___________|_______|___________GND
+	
