@@ -1,7 +1,7 @@
 /*
  *	Embedded Programming 2018
  *
- *	Opdracht: Timers
+ *	Opdracht: ADC
  *
  *	Code by 
  *		- Zeno Scheltens
