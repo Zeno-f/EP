@@ -15,30 +15,28 @@
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 
-#define button1 PORTbits.RB0
-#define button2 PORTbits.RB1
-#define yellow LATCbits.LATC7
+
 
 void interrupt myIsr (void)	{
 	
 	// software interrupt
 	if (INTCONbits.TMR0IE && INTCONbits.TMR0IF)	{		// enables TMR0 overflow interrupt - TMR0 reached overflow?
 		INTCONbits.TMR0IF = 0;							// reset TMR0, clears the overflow
-		LATCbits.LATC4 = ~LATCbits.LATC4;
+		LATCbits.LATC4 = ~LATCbits.LATC4;				// green led 1
+		LATCbits.LATC5 = ~LATCbits.LATC5;				// green led 2
+		LATCbits.LATC7 = ~LATCbits.LATC7;				// yellow led 3
 		// offset, 18661
 		TMR0H = 0x48;									// 72
 		TMR0L = 0xE5;									// 229
 	}
 	
 	if (INTCONbits.INT0E && INTCONbits.INT0F)	{		// enables external interrupt - did the interrupt happen
-		yellow = 0;
-		INTCONbits.TMR0IE = 0;							// disables TMR0 interrupt
+		INTCONbits.TMR0IE = 1;							// disables TMR0 interrupt
 		INTCONbits.INT0F = 0;							// clears this interrupt
 	}
 	
 	if (INTCON3bits.INT1E && INTCON3bits.INT1F)	{	// enables external interrupt - did the interrupt happen
-		yellow = 1;
-		INTCONbits.TMR0IE = 1;							// enables TMR0 interrupt
+		INTCONbits.TMR0IE = 0;							// enables TMR0 interrupt
 		INTCON3bits.INT1F = 0;							// clears this interrupt
 	}
 }
