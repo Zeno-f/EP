@@ -16,7 +16,7 @@
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 
 int _Analog_Digital_convertor_AN1(void);
-int _Analog_Digital_convertor_AN1(void);
+int _Analog_Digital_convertor_AN9(void);
 
 void putch (char c)
 {
@@ -25,12 +25,11 @@ void putch (char c)
 }
 
 void main() {
-	
+
 	unsigned int value1;
 	unsigned int value9;
-		
+
 	// Ini fase
-	
 	TRISCbits.TRISC6 = 0;	// Tx1 output
 	PIE3bits.RC2IE = 0;		// disable Rx interrupt USART2
 	PIE3bits.TX2IE = 0;		// disable Tx interrupt USART2
@@ -40,10 +39,8 @@ void main() {
 	RCSTA1 = 0x80;			//
 	BAUDCON1 = 0xC0;		//
 	SPBRG1 = 12;			//  
-	
-//	ANCON0.ANSEL1 = 1;
-//    ANCON1.ANSEL9 = 1;
-    
+
+	//loop om het de ADC uit te lezen en deze waarden weer te geven
     while(1)
     {
         value1 = _Analog_Digital_convertor_AN1();
@@ -51,7 +48,8 @@ void main() {
         printf("adcValue AN1 = %d, adcValue AN9 = %d\n\r", value1, value9);
     }
 }
-	
+
+// functie om AN1 uit te lezen
 int _Analog_Digital_convertor_AN1(void)
 {
     ADCON0 = 0b00000111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
@@ -61,6 +59,7 @@ int _Analog_Digital_convertor_AN1(void)
     return ADRESH << 8| ADRESL;
 }
 
+// functie om AN9 uit te lezen
 int _Analog_Digital_convertor_AN9(void)
 {
     ADCON0 = 0b00100111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
