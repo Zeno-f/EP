@@ -15,7 +15,8 @@
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 
-int Analog_Digital_convertor(void);
+int _Analog_Digital_convertor_AN1(void);
+int _Analog_Digital_convertor_AN1(void);
 
 void putch (char c)
 {
@@ -25,6 +26,9 @@ void putch (char c)
 
 void main() {
 	
+	unsigned int value1;
+	unsigned int value9;
+		
 	// Ini fase
 	
 	TRISCbits.TRISC6 = 0;	// Tx1 output
@@ -37,22 +41,31 @@ void main() {
 	BAUDCON1 = 0xC0;		//
 	SPBRG1 = 12;			//  
 	
-	ANCON0.ANSEL1 = 1;
-    ANCON1.ANSEL9 = 1;
+//	ANCON0.ANSEL1 = 1;
+//    ANCON1.ANSEL9 = 1;
     
     while(1)
     {
-        value = _Analog_Digital_convertor();
-        printf("adcValue = %d\n\r", value);
+        value1 = _Analog_Digital_convertor_AN1();
+		value9 = _Analog_Digital_convertor_AN9();		
+        printf("adcValue AN1 = %d, adcValue AN9 = %d\n\r", value1, value9);
     }
+}
 	
-	int Analog_Digital_convertor(void)
-    {
-        ADCON0 = 00100111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
-        ADCON1 = 00000010;       //trigger ECCP1(bit7-6), AVdd(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
-        ADCON2 = 10110001;       //right justified(bit7), Tad 0(bit5-3), conversion CLK Fosc/2(bit2-0)
-        while ( ADCON0bits.bit1 == 1);
-        return ADRESH << 8| ADRESL;
-    }
+int _Analog_Digital_convertor_AN1(void)
+{
+    ADCON0 = 0b00000111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
+    ADCON1 = 0b00000000;       //trigger ECCP1(bit7-6), AVdd(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
+    ADCON2 = 0b10110001;       //right justified(bit7), Tad 16(bit5-3), conversion CLK Fosc/8(bit2-0)
+    while ( ADCON0bits.nDONE == 1);
+    return ADRESH << 8| ADRESL;
+}
 
+int _Analog_Digital_convertor_AN9(void)
+{
+    ADCON0 = 0b00100111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
+    ADCON1 = 0b00000000;       //trigger ECCP1(bit7-6), AVdd(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
+    ADCON2 = 0b10110001;       //right justified(bit7), Tad 16(bit5-3), conversion CLK Fosc/8(bit2-0)
+    while ( ADCON0bits.nDONE == 1);
+    return ADRESH << 8| ADRESL;
 }
