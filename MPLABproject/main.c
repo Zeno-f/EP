@@ -24,6 +24,18 @@ void putch (char c)
     TXREG1 = c;
 }
 
+void interrupt myIsr (void)	{
+	
+	// software interrupt
+	if (INTCONbits.TMR0IE && INTCONbits.TMR0IF)	{		// enables TMR0 overflow interrupt - TMR0 reached overflow?
+		INTCONbits.TMR0IF = 0;							// reset TMR0, clears the overflow
+		LATCbits.LATC4 = ~LATCbits.LATC4;
+		// offset, 18661
+		TMR0H = 0x48;									// 72
+		TMR0L = 0xE5;									// 229
+	}
+}
+
 void main() {
 
 	unsigned int value1;
