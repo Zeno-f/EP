@@ -22,6 +22,8 @@ int _Analog_Digital_convertor_AN9(void);
 // declare global variables
 char sendData = 0;
 
+// macros
+
 void putch (char c)
 {
     while(TXSTA1bits.TRMT == 0);
@@ -45,6 +47,8 @@ void main() {
 
 	unsigned int value1;
 	unsigned int value9;
+	int valueTemp;
+	int valueTemperatuur;
 
 	// Ini fase
 	
@@ -69,8 +73,13 @@ void main() {
     while(sendData == 1)
     {
         value1 = _Analog_Digital_convertor_AN1();
-		value9 = _Analog_Digital_convertor_AN9();		
-        printf("adcValue AN1 = %d, adcValue AN9 = %d\n\r", value1, value9);
+		value9 = _Analog_Digital_convertor_AN9();
+		valueTemp = (value9 - 820)*10;
+		valueTemperatuur = valueTemp / 4;
+		if ((valueTemp % 4) >= 5)	{
+			valueTemperatuur++;
+		}
+        printf("adcValue AN1 = %d, Temperatuur = %d.%02d\n\r", value1, (valueTemperatuur/100), (valueTemperatuur%100));
 		sendData = 0;
     }
 }
