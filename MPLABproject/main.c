@@ -31,8 +31,8 @@ void interrupt myIsr (void)	{
 		INTCONbits.TMR0IF = 0;							// reset TMR0, clears the overflow
 		LATCbits.LATC4 = ~LATCbits.LATC4;
 		// offset, 18661
-		TMR0H = 0x48;									// 72
-		TMR0L = 0xE5;									// 229
+		TMR0H = 0x5E;									// 94
+		TMR0L = 0x1C;									// 28
 	}
 }
 
@@ -42,6 +42,8 @@ void main() {
 	unsigned int value9;
 
 	// Ini fase
+	
+	// seriele communicatie
 	TRISCbits.TRISC6 = 0;	// Tx1 output
 	PIE3bits.RC2IE = 0;		// disable Rx interrupt USART2
 	PIE3bits.TX2IE = 0;		// disable Tx interrupt USART2
@@ -51,6 +53,12 @@ void main() {
 	RCSTA1 = 0x80;			//
 	BAUDCON1 = 0xC0;		//
 	SPBRG1 = 12;			//  
+	
+	// Interrupts
+	T0CON = 0b10000100;				// enables timer 1 as 16 bit with a /32 prescale
+	INTCON2bits.TMR0IP = 1;			// overflow interrupt priority
+	INTCONbits.TMR0IF = 0;			// clears the timer overflow
+	INTCONbits.TMR0IE = 1;			// enables the timer interrupt	
 
 	//loop om het de ADC uit te lezen en deze waarden weer te geven
     while(1)
