@@ -30,6 +30,7 @@ void putch (char c)
     TXREG1 = c;
 }
 
+// see xc8 compiler documentation on why interrupts are named the way they are
 void interrupt myIsr (void)	{
 	
 	// software interrupt
@@ -41,6 +42,11 @@ void interrupt myIsr (void)	{
 		TMR0H = 0x5E;							// 94
 		TMR0L = 0x1C;							// 28
 	}
+}
+
+//low priority interrupts
+void interrupt low_priority moreIsr (void)	{
+	;  // 
 }
 
 void main() {
