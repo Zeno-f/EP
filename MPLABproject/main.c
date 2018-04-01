@@ -15,8 +15,12 @@
 
 #define _XTAL_FREQ 8000000  // X-tal = 8 MHz
 
+// declare functions
 int _Analog_Digital_convertor_AN1(void);
 int _Analog_Digital_convertor_AN9(void);
+
+// declare global variables
+char sendData = 0;
 
 void putch (char c)
 {
@@ -27,12 +31,13 @@ void putch (char c)
 void interrupt myIsr (void)	{
 	
 	// software interrupt
+	// timer0 interrupting every 1 sec
 	if (INTCONbits.TMR0IE && INTCONbits.TMR0IF)	{		// enables TMR0 overflow interrupt - TMR0 reached overflow?
 		INTCONbits.TMR0IF = 0;							// reset TMR0, clears the overflow
-		LATCbits.LATC4 = ~LATCbits.LATC4;
-		// offset, 18661
-		TMR0H = 0x5E;									// 94
-		TMR0L = 0x1C;									// 28
+		sendData = 1;
+		// offset: 3036
+		TMR0H = 0x5E;							// 94
+		TMR0L = 0x1C;							// 28
 	}
 }
 
@@ -61,11 +66,12 @@ void main() {
 	INTCONbits.TMR0IE = 1;			// enables the timer interrupt	
 
 	//loop om het de ADC uit te lezen en deze waarden weer te geven
-    while(1)
+    while(sendData == 1)
     {
         value1 = _Analog_Digital_convertor_AN1();
 		value9 = _Analog_Digital_convertor_AN9();		
         printf("adcValue AN1 = %d, adcValue AN9 = %d\n\r", value1, value9);
+		sendData = 0;
     }
 }
 
