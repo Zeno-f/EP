@@ -24,6 +24,7 @@ char sendData = 0;
 
 // macros
 
+//functions
 void putch (char c)
 {
     while(TXSTA1bits.TRMT == 0);
@@ -60,6 +61,7 @@ void main() {
 	
 	// sleep settings
 	OSCCONbits.IDLEN = 0; Device enters sleep mode when sleep instruction is executed
+	// any other settings that needs to be done to enable sleep mode
 	
 	// seriele communicatie
 	TRISCbits.TRISC6 = 0;	// Tx1 output
@@ -122,7 +124,8 @@ int _Analog_Digital_convertor_AN1(void)
 	// ADCON0
 	ADCON0bits.CHS = 00001;		// channel AN1 (pin3)
 	ADCON0bits.nDONE = 1;
-	;							// put microcontroller to sleep
+	// ******************************************************************************************************************
+	;							// put microcontroller to sleep needs to happen before enabling ADC converting is enabled
     while (ADCON0bits.nDONE == 1);
     return ADRESH << 8| ADRESL;
 }
@@ -133,6 +136,7 @@ int _Analog_Digital_convertor_AN9(void)
 	// ADCON0
 	ADCON0bits.CHS = 01001;		// channel AN9 (pinx)
 	ADCON0bits.nDONE = 1;
+	// *****************************************************************************************************************************
 	;							// put microcontroller to sleep
     while (ADCON0bits.nDONE == 1);
     return ADRESH << 8| ADRESL;
