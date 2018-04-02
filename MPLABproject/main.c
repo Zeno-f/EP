@@ -56,12 +56,10 @@ void interrupt low_priority moreIsr (void)	{
 
 void main() {
 
-	unsigned int value1;
-	unsigned int value9;
-	int valueTemp;
-	int valueTemperatuur;
-
 	// Ini fase
+	
+	// sleep settings
+	OSCCONbits.IDLEN = 0; Device enters sleep mode when sleep instruction is executed
 	
 	// seriele communicatie
 	TRISCbits.TRISC6 = 0;	// Tx1 output
@@ -80,9 +78,29 @@ void main() {
 	INTCONbits.TMR0IF = 0;			// clears the timer overflow
 	INTCONbits.TMR0IE = 1;			// enables the timer interrupt	
 
+	// ADC
+	// ADCON1
+	ADCON1bits.VCFG = 11; 		// Vref+ = 4.1V
+	ADCON1bits.VNCFG = 0; 		// Vref- = AVss
+	ADCON1bits.CHS = 000; 		// Select ADC negative channel
+	
+	// ADCON2
+	ADCON2bits.ADFM = 1;		// right justified
+	ADCON2bits.ACQT = 110;		// 16 Tad - 12 bit, min 14 Tad, max little as possible
+	ADCON2bits.ADCS = 111;		// Frc - ADC RC oscillator
+	
+	// variables
+	unsigned int value1;
+	unsigned int value9;
+	int valueTemp;
+	int valueTemperatuur;
+
 	//loop om het de ADC uit te lezen en deze waarden weer te geven
     while(sendData == 1)
     {
+		// enable ADC module
+		ADCON0.ADON = 1;
+		
         value1 = _Analog_Digital_convertor_AN1();
 		value9 = _Analog_Digital_convertor_AN9();
 		valueTemp = (value9 - 820)*10;
@@ -92,15 +110,18 @@ void main() {
 		}
         printf("adcValue AN1 = %d, Temperatuur = %d.%02d\n\r", value1, (valueTemperatuur/100), (valueTemperatuur%100));
 		sendData = 0;
+		
+		// turn off ADC module to save current
+		ADCON0.ADON = 0;
     }
 }
 
 // functie om AN1 uit te lezen
 int _Analog_Digital_convertor_AN1(void)
 {
-    ADCON0 = 0b00000111;       	//channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
-    ADCON1 = 0b00110000;       	//trigger ECCP1(bit7-6), AVref 4.1V(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
-    ADCON2 = 0b10110001;       	//right justified(bit7), Tad 16(bit5-3), conversion CLK Fosc/8(bit2-0)
+	// ADCON0
+	ADCON0bits.CHS = 00001;		// channel AN1 (pin3)
+	ADCON0bits.nDONE = 1;
 	;							// put microcontroller to sleep
     while (ADCON0bits.nDONE == 1);
     return ADRESH << 8| ADRESL;
@@ -109,9 +130,9 @@ int _Analog_Digital_convertor_AN1(void)
 // functie om AN9 uit te lezen
 int _Analog_Digital_convertor_AN9(void)
 {
-    ADCON0 = 0b00100111;       	//channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
-    ADCON1 = 0b00110000;       	//trigger ECCP1(bit7-6), AVref 4.1V(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
-    ADCON2 = 0b10110001;       	//right justified(bit7), Tad 16(bit5-3), conversion CLK Fosc/8(bit2-0)
+	// ADCON0
+	ADCON0bits.CHS = 01001;		// channel AN9 (pinx)
+	ADCON0bits.nDONE = 1;
 	;							// put microcontroller to sleep
     while (ADCON0bits.nDONE == 1);
     return ADRESH << 8| ADRESL;
