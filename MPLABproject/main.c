@@ -58,17 +58,21 @@ void main() {
 	PIE3bits.TX2IE = 0;		// disable Tx interrupt USART2
 	PIE1bits.RC1IE = 0;		// disable Rx interrupt USART1
 	PIE1bits.TX1IE = 0;		// disable Tx interrupt USART1
-	TXSTA1 = 0xA0;			//
+	TXSTA1 = 0xA0;			// 
 	RCSTA1 = 0x80;			//
 	BAUDCON1 = 0xC0;		//
 	SPBRG1 = 12;			//  
 	
-	// Interrupts
+/**************************************************************************/
+// Setup Timer Interrupt ;
+/**************************************************************************/
 	T0CON = 0b10000100;				// enables timer 1 as 16 bit with a /32 prescale
 	INTCON2bits.TMR0IP = 1;			// overflow interrupt priority
 	INTCONbits.TMR0IF = 0;			// clears the timer overflow
 	INTCONbits.TMR0IE = 1;			// enables the timer interrupt	
 
+	ei();
+	
 	//loop om het de ADC uit te lezen en deze waarden weer te geven
     while(sendData == 1)
     {
