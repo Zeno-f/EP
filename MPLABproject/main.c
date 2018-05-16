@@ -47,7 +47,6 @@ void main() {
 
 	unsigned int value1;
 	unsigned int value9;
-	int valueTemp;
 	int valueTemperatuur;
 
 	// Ini fase
@@ -78,11 +77,7 @@ void main() {
     {
         value1 = _Analog_Digital_convertor_AN1();
 		value9 = _Analog_Digital_convertor_AN9();
-		valueTemp = (value9 - 820)*10;
-		valueTemperatuur = valueTemp / 4;
-		if ((valueTemp % 4) >= 5)	{
-			valueTemperatuur++;
-		}
+		valueTemperatuur = ((value9 - 820)*10) / 4;
         printf("adcValue AN1 = %d, Temperatuur = %d.%02d\n\r", value1, (valueTemperatuur/100), (valueTemperatuur%100));
 		sendData = 0;
     }
