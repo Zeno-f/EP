@@ -96,7 +96,7 @@ int _Analog_Digital_convertor_AN1(void)
 // functie om AN9 uit te lezen
 int _Analog_Digital_convertor_AN9(void)
 {
-    ADCON0 = 0b00100111;       //channel AN1[pin3](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
+    ADCON0 = 0b00100111;       //channel AN9[pin_](bit6-2), Start ADCconversion(bit1), ADC on(bit0)
     ADCON1 = 0b00110000;       //trigger ECCP1(bit7-6), AVref 4.1V(bit5-4), AVss(bit3), Neg Channel00(AVss)(bit2-0)
     ADCON2 = 0b10110001;       //right justified(bit7), Tad 16(bit5-3), conversion CLK Fosc/8(bit2-0)
     while ( ADCON0bits.nDONE == 1);
